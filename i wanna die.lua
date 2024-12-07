@@ -75,19 +75,19 @@ function preventAFK()
     end
 end
 
--- Creating the new Screen UI
+--- Creating the new Screen UI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer.PlayerGui
 screenGui.Name = "DashFishingUI"
 screenGui.ResetOnSpawn = false
 
--- Main frame with gradient background
+-- Main frame with transparent background and gradient effect
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
 mainFrame.Size = UDim2.new(0.3, 0, 0.5, 0)
 mainFrame.Position = UDim2.new(0.35, 0, 0.25, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Transparent base
-mainFrame.BackgroundTransparency = 0.5
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Base color
+mainFrame.BackgroundTransparency = 0.6  -- Slightly transparent for modern look
 mainFrame.BorderSizePixel = 0
 mainFrame.ClipsDescendants = true
 
@@ -98,30 +98,63 @@ gradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 0, 255)),  -- Purple
     ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))   -- Pink
 })
-gradient.Rotation = 45
+gradient.Rotation = 45  -- Slight rotation for visual interest
 
--- Title Label
+-- Title Label (with a clean, professional font)
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Parent = mainFrame
 titleLabel.Size = UDim2.new(1, 0, 0.1, 0)
 titleLabel.Position = UDim2.new(0, 0, 0, 0)
 titleLabel.Text = "Dash Fishing"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLabel.TextSize = 24
+titleLabel.TextSize = 26
+titleLabel.Font = Enum.Font.GothamBold  -- Modern, clean font
 titleLabel.BackgroundTransparency = 1
-titleLabel.TextStrokeTransparency = 0.8
+titleLabel.TextStrokeTransparency = 0.5
 titleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
--- Function to create rainbow buttons
-function createRainbowButton(text, position)
+-- Function to create rainbow buttons with hover effects
+function createRainbowButton(title, position)
     local button = Instance.new("TextButton")
     button.Parent = mainFrame
-    button.Text = text
+    button.Text = title
     button.Size = UDim2.new(0, 200, 0, 50)
     button.Position = position
-    button.BackgroundColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)  -- Rainbow effect
+    button.BackgroundColor3 = Color3.fromRGB(100, 0, 150)
     button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 18
+    button.Font = Enum.Font.GothamMedium  -- Smooth, readable font
+    button.BorderRadius = UDim.new(0, 12)  -- Rounded corners
+    button.AutoButtonColor = true
+
+    -- Hover effect to change button color
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(255, 0, 255)  -- Bright pink on hover
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(100, 0, 150)  -- Return to original color
+    end)
+
+    -- Rainbow effect on button text
+    local function updateRainbowColor()
+        while button.Parent do
+            button.TextColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)  -- Smooth rainbow text color
+            wait(0.1)
+        end
+    end
+    spawn(updateRainbowColor)
+
+    return button
 end
+
+-- Create the buttons for the features (no actions, just visual elements)
+local teleportButton = createRainbowButton("Teleport to Island", UDim2.new(0, 0, 0.15, 0))
+local autoFishButton = createRainbowButton("Auto Farm Fish", UDim2.new(0, 0, 0.25, 0))
+local selectPositionButton = createRainbowButton("Select Position", UDim2.new(0, 0, 0.35, 0))
+
+-- Add more buttons or elements here as needed...
+
+
 
 -- Function to create teleport buttons dynamically
 function createTeleportButton(title, position)
