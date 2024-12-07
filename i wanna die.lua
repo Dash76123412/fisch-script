@@ -1,24 +1,25 @@
 -- Fisch Script Customization by Dash
 
 local LocalPlayer = game.Players.LocalPlayer
--- Ensure that a ScreenGui is being created and attached to PlayerGui
+
+-- Ensure a ScreenGui is properly created and parented to PlayerGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "DashFishingUI"
 screenGui.Parent = game.Players.LocalPlayer.PlayerGui
 screenGui.ResetOnSpawn = false
 
--- Create Main Frame with rounded corners and transparent background
+-- Create the Main Frame (with a transparent background and rounded corners)
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
-mainFrame.Size = UDim2.new(0.4, 0, 0.6, 0)
-mainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-mainFrame.BackgroundTransparency = 0.7
-mainFrame.BorderSizePixel = 0
-mainFrame.ClipsDescendants = true
-mainFrame.BorderRadius = UDim.new(0, 12)
+mainFrame.Size = UDim2.new(0.4, 0, 0.6, 0)  -- Set size of the frame
+mainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)  -- Position the frame on the screen
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  -- Dark background for the frame
+mainFrame.BackgroundTransparency = 0.7  -- Semi-transparent background
+mainFrame.BorderSizePixel = 0  -- No border
+mainFrame.BorderRadius = UDim.new(0, 12)  -- Rounded corners
+mainFrame.ClipsDescendants = true  -- To hide overflow
 
--- Title Label
+-- Title Label: Title at the top of the frame
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Parent = mainFrame
 titleLabel.Size = UDim2.new(1, 0, 0.1, 0)
@@ -31,7 +32,7 @@ titleLabel.BackgroundTransparency = 1
 titleLabel.TextStrokeTransparency = 0.5
 titleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
--- Minimize Button
+-- Minimize Button (to hide/show the menu)
 local minimizeButton = Instance.new("TextButton")
 minimizeButton.Parent = titleLabel
 minimizeButton.Size = UDim2.new(0.1, 0, 1, 0)
@@ -55,7 +56,7 @@ minimizeButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Add basic draggable functionality
+-- Add draggable functionality to the frame
 local dragging = false
 local dragStartPos = Vector2.new()
 
@@ -78,9 +79,16 @@ titleLabel.InputEnded:Connect(function(input)
     end
 end)
 
--- Make sure everything is visible
+-- Ensure everything is visible and working
 screenGui.Enabled = true
 mainFrame.Visible = true
+
+-- Check if everything is initialized correctly
+if not screenGui.Parent then
+    warn("ScreenGui was not successfully parented!")
+else
+    print("UI successfully loaded.")
+end
 
 -- Table of teleportation locations
 local teleportLocations = {
