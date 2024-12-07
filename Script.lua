@@ -1,184 +1,142 @@
--- Fisch Script Customization by Dash
+-- Create the main screen GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
+ScreenGui.Name = "CustomMenu"
 
-local LocalPlayer = game.Players.LocalPlayer
+-- Main frame with purple background
+local MainFrame = Instance.new("Frame")
+MainFrame.Parent = ScreenGui
+MainFrame.Size = UDim2.new(0.5, 0, 0.75, 0)  -- Adjust the size of the frame
+MainFrame.Position = UDim2.new(0.25, 0, 0.125, 0)  -- Center the frame
+MainFrame.BackgroundColor3 = Color3.fromRGB(128, 0, 128)  -- Purple background
+MainFrame.BackgroundTransparency = 0.2  -- Slight transparency for aesthetic effect
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
 
--- Table of teleportation locations
-local teleportLocations = {
-    ["Sunstone Island"] = CFrame.new(-913.6306, 137.2935, -1129.8995),
-    ["Roslit Bay"] = CFrame.new(-1501.6755, 133, 416.207),
-    ["Random Islands"] = CFrame.new(237.6945, 139.3498, 43.1034),
-    ["Moosewood"] = CFrame.new(433.7972, 147.0700, 261.8022),
-    ["Executive Headquarters"] = CFrame.new(-36.4620, -246.5500, 205.7712),
-    ["Enchant Room"] = CFrame.new(1310.0481, -805.2922, -162.3451),
-    ["Statue of Sovereignty"] = CFrame.new(22.0987, 159.0147, -1039.8544),
-    ["Mushgrove Swamp"] = CFrame.new(2442.8059, 130.9041, -686.1649),
-    ["Snowcap Island"] = CFrame.new(2589.5349, 134.9249, 2333.0994),
-    ["Terrapin Island"] = CFrame.new(152.3716, 154.9102, 2000.9171),
-    ["Enchant Relic"] = CFrame.new(1309.2784, -802.4270, -83.3640),
-    ["Best Spot"] = CFrame.new(1447.8507, 131.5000, -7649.6450),
-}
+-- Add a title bar with a close button
+local TitleBar = Instance.new("Frame")
+TitleBar.Parent = MainFrame
+TitleBar.Size = UDim2.new(1, 0, 0.1, 0)  -- Title bar at the top
+TitleBar.BackgroundColor3 = Color3.fromRGB(75, 0, 130)  -- Purple color for title bar
+TitleBar.BorderSizePixel = 0
 
--- Function to teleport to a location
-function teleportTo(location)
-    local target = teleportLocations[location]
-    if target then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = target
-    else
-        warn("Teleport location not found.")
-    end
-end
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Parent = TitleBar
+TitleLabel.Text = "Dash Hub v1.6"
+TitleLabel.Size = UDim2.new(1, 0, 1, 0)
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 18
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
+TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
+TitleLabel.BackgroundTransparency = 1
 
--- Function to give fish to a player
-function giveFish(player, amount)
-    -- Assuming there's a custom variable for fish
-    player.leaderstats.Fish.Value = player.leaderstats.Fish.Value + amount
-end
+local CloseButton = Instance.new("TextButton")
+CloseButton.Parent = TitleBar
+CloseButton.Size = UDim2.new(0, 50, 1, 0)  -- Close button on the right
+CloseButton.Position = UDim2.new(1, -50, 0, 0)
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.BackgroundColor3 = Color3.fromRGB(150, 0, 255)
+CloseButton.TextSize = 18
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()  -- Close the menu when clicked
+end)
 
--- Function to give money to a player
-function giveMoney(player, amount)
-    -- Assuming there's a custom variable for money
-    player.leaderstats.Money.Value = player.leaderstats.Money.Value + amount
-end
-
--- Function for auto reeling
-function autoReel()
+-- Rainbow glow effect for tabs
+local function rainbowGlow(object)
+    -- This function applies a rainbow glow effect to the object's text color
+    local colors = {Color3.fromRGB(255, 0, 0), Color3.fromRGB(255, 165, 0), Color3.fromRGB(255, 255, 0), Color3.fromRGB(0, 255, 0), Color3.fromRGB(0, 0, 255), Color3.fromRGB(75, 0, 130), Color3.fromRGB(238, 130, 238)}
+    local i = 1
     while true do
-        -- Simulate the reeling process
-        print("Reeling...")
-        wait(2)
+        object.TextColor3 = colors[i]
+        i = i % #colors + 1
+        wait(0.5)  -- Change color every 0.5 seconds for rainbow effect
     end
 end
 
--- Function for auto shaking
-function autoShake()
-    while true do
-        -- Simulate the shaking process
-        print("Shaking...")
-        wait(1)
-    end
+-- Create the sections with rainbow effect on titles
+local function createSection(title, position)
+    local Section = Instance.new("Frame")
+    Section.Parent = MainFrame
+    Section.Size = UDim2.new(1, 0, 0.2, 0)
+    Section.Position = position
+    Section.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Dark gray for sections
+    Section.BorderSizePixel = 0
+
+    local SectionTitle = Instance.new("TextLabel")
+    SectionTitle.Parent = Section
+    SectionTitle.Text = title
+    SectionTitle.Size = UDim2.new(1, 0, 0.2, 0)
+    SectionTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SectionTitle.TextSize = 18
+    SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
+    SectionTitle.TextYAlignment = Enum.TextYAlignment.Center
+    SectionTitle.BackgroundTransparency = 1
+    
+    -- Apply rainbow glow effect to section titles
+    rainbowGlow(SectionTitle)
+
+    return Section
 end
 
--- Function for auto casting
-function autoCast()
-    while true do
-        -- Simulate casting
-        print("Casting...")
-        wait(5)
-    end
-end
+-- Create "General" Section
+local GeneralSection = createSection("General", UDim2.new(0, 0, 0.1, 0))
 
--- Anti-AFK function
-function preventAFK()
-    while true do
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-        wait(10)
-    end
-end
-
--- UI Customization with Purple and Rainbow Effect
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.Players.LocalPlayer.PlayerGui
-screenGui.Name = "DashFishingMenu"
-
-local mainFrame = Instance.new("Frame")
-mainFrame.Parent = screenGui
-mainFrame.Size = UDim2.new(0.3, 0, 0.5, 0)
-mainFrame.Position = UDim2.new(0.35, 0, 0.25, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(150, 0, 255)  -- Purple color
-
--- Function to create rainbow buttons
-function createRainbowButton(text, position)
-    local button = Instance.new("TextButton")
-    button.Parent = mainFrame
-    button.Text = text
-    button.Size = UDim2.new(0, 200, 0, 50)
-    button.Position = position
-    button.BackgroundColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)  -- Rainbow effect
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-end
-
--- Function to create teleport buttons dynamically
-function createTeleportButton(title, position)
-    local button = Instance.new("TextButton", mainFrame)
-    button.Size = UDim2.new(0, 200, 0, 50)
-    button.Position = position
-    button.Text = title
-    button.MouseButton1Click:Connect(function()
-        teleportTo(title)
+-- Create toggle buttons for the "General" section with rainbow text effect
+local function createToggleButton(parent, title, position)
+    local ToggleButton = Instance.new("TextButton")
+    ToggleButton.Parent = parent
+    ToggleButton.Size = UDim2.new(1, 0, 0.2, 0)
+    ToggleButton.Position = position
+    ToggleButton.Text = title
+    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+    ToggleButton.TextSize = 16
+    ToggleButton.MouseButton1Click:Connect(function()
+        print(title .. " toggled!")  -- Toggle functionality (to be implemented)
     end)
+
+    -- Apply rainbow glow effect to the button text
+    rainbowGlow(ToggleButton)
+
+    return ToggleButton
 end
 
--- Add teleport buttons to the UI
-local yPosition = 0
-for location, _ in pairs(teleportLocations) do
-    createTeleportButton(location, UDim2.new(0.1, 0, 0.1 + (yPosition * 0.1), 0))
-    yPosition = yPosition + 1
+-- Create toggle buttons inside "General" section
+createToggleButton(GeneralSection, "Auto Farm Fish", UDim2.new(0, 0, 0.2, 0))
+createToggleButton(GeneralSection, "Teleport To Select Position", UDim2.new(0, 0, 0.4, 0))
+
+-- Create "Seller" Section
+local SellerSection = createSection("Seller", UDim2.new(0, 0, 0.3, 0))
+
+-- Create toggle buttons for "Seller" section
+createToggleButton(SellerSection, "Auto Sell Fish", UDim2.new(0, 0, 0.2, 0))
+createToggleButton(SellerSection, "Sell All Fish", UDim2.new(0, 0, 0.4, 0))
+
+-- Create "Info Fish" Section
+local InfoFishSection = createSection("Info Fish", UDim2.new(0, 0, 0.5, 0))
+
+-- Create info buttons for "Info Fish" section
+local function createInfoButton(parent, title, position)
+    local InfoButton = Instance.new("TextButton")
+    InfoButton.Parent = parent
+    InfoButton.Size = UDim2.new(1, 0, 0.2, 0)
+    InfoButton.Position = position
+    InfoButton.Text = title
+    InfoButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InfoButton.BackgroundColor3 = Color3.fromRGB(255, 0, 255)
+    InfoButton.TextSize = 16
+    InfoButton.MouseButton1Click:Connect(function()
+        print(title .. " info requested!")  -- Info functionality (to be implemented)
+    end)
+
+    -- Apply rainbow glow effect to the button text
+    rainbowGlow(InfoButton)
+
+    return InfoButton
 end
 
--- Add rainbow effect buttons for other features
-createRainbowButton("Auto Cast", UDim2.new(0, 0, 0, 250))
-createRainbowButton("Auto Shake", UDim2.new(0, 0, 0, 310))
-createRainbowButton("Auto Reel", UDim2.new(0, 0, 0, 370))
+-- Create info buttons inside "Info Fish" section
+createInfoButton(InfoFishSection, "Get Fish Info", UDim2.new(0, 0, 0.2, 0))
+createInfoButton(InfoFishSection, "Select Fish", UDim2.new(0, 0, 0.4, 0))
 
--- Add buttons for giving fish and money
-createRainbowButton("Give Fish", UDim2.new(0, 0, 0, 430))
-createRainbowButton("Give Money", UDim2.new(0, 0, 0, 490))
-
--- Add new functionality for "Auto Farm Fish" and "Teleport To Select Position"
-local Main = Instance.new("Frame")
-Main.Parent = screenGui
-Main.Size = UDim2.new(0.3, 0, 0.5, 0)
-Main.Position = UDim2.new(0.7, 0, 0.25, 0)
-Main.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
-
-local Config = {}
-
--- Toggle Auto Farm Fish
-local autoFarmFishToggle = Instance.new("TextButton")
-autoFarmFishToggle.Parent = Main
-autoFarmFishToggle.Size = UDim2.new(0, 200, 0, 50)
-autoFarmFishToggle.Position = UDim2.new(0.1, 0, 0.1, 0)
-autoFarmFishToggle.Text = "Auto Farm Fish"
-autoFarmFishToggle.MouseButton1Click:Connect(function()
-    if not Config["AutoFarmFish"] then
-        Config["AutoFarmFish"] = true
-        print("Auto Farm Fish Enabled")
-        -- Add logic for auto farming fish here
-    else
-        Config["AutoFarmFish"] = false
-        print("Auto Farm Fish Disabled")
-    end
-end)
-
--- Toggle Teleport to Selected Position
-local teleportToPositionToggle = Instance.new("TextButton")
-teleportToPositionToggle.Parent = Main
-teleportToPositionToggle.Size = UDim2.new(0, 200, 0, 50)
-teleportToPositionToggle.Position = UDim2.new(0.1, 0, 0.2, 0)
-teleportToPositionToggle.Text = "Teleport To Select Position"
-teleportToPositionToggle.MouseButton1Click:Connect(function()
-    if Config["SelectPositionStand"] then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Config["SelectPositionStand"]
-        print("Teleported to selected position.")
-    else
-        print("No position selected yet.")
-    end
-end)
-
--- Button to select a position
-local selectPositionButton = Instance.new("TextButton")
-selectPositionButton.Parent = Main
-selectPositionButton.Size = UDim2.new(0, 200, 0, 50)
-selectPositionButton.Position = UDim2.new(0.1, 0, 0.3, 0)
-selectPositionButton.Text = "Select Position"
-selectPositionButton.MouseButton1Click:Connect(function()
-    Config['SelectPositionStand'] = LocalPlayer.Character.HumanoidRootPart.CFrame
-    print("Position Selected: X " .. tostring(math.floor(LocalPlayer.Character.HumanoidRootPart.Position.X)) ..
-          " Y " .. tostring(math.floor(LocalPlayer.Character.HumanoidRootPart.Position.Y)) ..
-          " Z " .. tostring(math.floor(LocalPlayer.Character.HumanoidRootPart.Position.Z)))
-end)
-
--- Start Anti-AFK function
-preventAFK()
-
-print("Fisch Script Customized with All Features Loaded Successfully!")
