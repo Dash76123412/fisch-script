@@ -75,77 +75,141 @@ function preventAFK()
     end
 end
 
---- Creating the new Screen UI
+-- Creating the main ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer.PlayerGui
 screenGui.Name = "DashFishingUI"
 screenGui.ResetOnSpawn = false
 
--- Main frame with transparent background and gradient effect
+-- Main frame with dark background and rounded edges
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
-mainFrame.Size = UDim2.new(0.3, 0, 0.5, 0)
-mainFrame.Position = UDim2.new(0.35, 0, 0.25, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Base color
-mainFrame.BackgroundTransparency = 0.6  -- Slightly transparent for modern look
+mainFrame.Size = UDim2.new(0.4, 0, 0.6, 0)
+mainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BackgroundTransparency = 0.7
 mainFrame.BorderSizePixel = 0
 mainFrame.ClipsDescendants = true
+mainFrame.BorderRadius = UDim.new(0, 12)  -- Rounded corners
 
--- Adding gradient background to the main frame
-local gradient = Instance.new("UIGradient")
-gradient.Parent = mainFrame
-gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 0, 255)),  -- Purple
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))   -- Pink
-})
-gradient.Rotation = 45  -- Slight rotation for visual interest
-
--- Title Label (with a clean, professional font)
+-- Title Label
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Parent = mainFrame
 titleLabel.Size = UDim2.new(1, 0, 0.1, 0)
 titleLabel.Position = UDim2.new(0, 0, 0, 0)
 titleLabel.Text = "Dash Fishing"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLabel.TextSize = 26
-titleLabel.Font = Enum.Font.GothamBold  -- Modern, clean font
+titleLabel.TextSize = 22
+titleLabel.Font = Enum.Font.GothamBold
 titleLabel.BackgroundTransparency = 1
 titleLabel.TextStrokeTransparency = 0.5
 titleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
--- Function to create rainbow buttons with hover effects
-function createRainbowButton(title, position)
-    local button = Instance.new("TextButton")
-    button.Parent = mainFrame
-    button.Text = title
-    button.Size = UDim2.new(0, 200, 0, 50)
-    button.Position = position
-    button.BackgroundColor3 = Color3.fromRGB(100, 0, 150)
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.TextSize = 18
-    button.Font = Enum.Font.GothamMedium  -- Smooth, readable font
-    button.BorderRadius = UDim.new(0, 12)  -- Rounded corners
-    button.AutoButtonColor = true
+-- Adding tabs (Main, Teleports, etc.)
+local tabButtonFrame = Instance.new("Frame")
+tabButtonFrame.Parent = mainFrame
+tabButtonFrame.Size = UDim2.new(0.2, 0, 1, 0)
+tabButtonFrame.Position = UDim2.new(0, 0, 0, 0)
+tabButtonFrame.BackgroundTransparency = 1
 
-    -- Hover effect to change button color
-    button.MouseEnter:Connect(function()
-        button.BackgroundColor3 = Color3.fromRGB(255, 0, 255)  -- Bright pink on hover
-    end)
-    button.MouseLeave:Connect(function()
-        button.BackgroundColor3 = Color3.fromRGB(100, 0, 150)  -- Return to original color
-    end)
+-- Create a button for "Main"
+local mainTabButton = Instance.new("TextButton")
+mainTabButton.Parent = tabButtonFrame
+mainTabButton.Size = UDim2.new(1, 0, 0, 50)
+mainTabButton.Text = "Main"
+mainTabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+mainTabButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainTabButton.Font = Enum.Font.Gotham
+mainTabButton.TextSize = 18
+mainTabButton.BorderSizePixel = 0
+mainTabButton.BorderRadius = UDim.new(0, 8)
 
-    -- Rainbow effect on button text
-    local function updateRainbowColor()
-        while button.Parent do
-            button.TextColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)  -- Smooth rainbow text color
-            wait(0.1)
+-- Function to create toggles (Auto Fish, Freeze Position, etc.)
+function createToggle(title, position)
+    local toggleFrame = Instance.new("Frame")
+    toggleFrame.Parent = mainFrame
+    toggleFrame.Size = UDim2.new(1, 0, 0, 40)
+    toggleFrame.Position = position
+    toggleFrame.BackgroundTransparency = 1
+
+    -- Toggle button
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Parent = toggleFrame
+    toggleButton.Size = UDim2.new(0.5, 0, 1, 0)
+    toggleButton.Position = UDim2.new(0, 0, 0, 0)
+    toggleButton.Text = title
+    toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    toggleButton.Font = Enum.Font.Gotham
+    toggleButton.TextSize = 16
+    toggleButton.BorderSizePixel = 0
+    toggleButton.BorderRadius = UDim.new(0, 8)
+
+    local toggleSwitch = Instance.new("TextButton")
+    toggleSwitch.Parent = toggleFrame
+    toggleSwitch.Size = UDim2.new(0.4, 0, 1, 0)
+    toggleSwitch.Position = UDim2.new(0.6, 0, 0, 0)
+    toggleSwitch.Text = "Off"
+    toggleSwitch.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggleSwitch.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    toggleSwitch.Font = Enum.Font.Gotham
+    toggleSwitch.TextSize = 16
+    toggleSwitch.BorderSizePixel = 0
+    toggleSwitch.BorderRadius = UDim.new(0, 8)
+
+    -- Toggle switch behavior
+    toggleSwitch.MouseButton1Click:Connect(function()
+        if toggleSwitch.Text == "Off" then
+            toggleSwitch.Text = "On"
+            toggleSwitch.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+        else
+            toggleSwitch.Text = "Off"
+            toggleSwitch.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
         end
-    end
-    spawn(updateRainbowColor)
-
-    return button
+    end)
 end
+
+-- Create toggles for Auto Fish and Freeze Position
+createToggle("Auto Fish", UDim2.new(0, 0, 0.15, 0))
+createToggle("Freeze Position", UDim2.new(0, 0, 0.25, 0))
+
+-- Create a slider for Auto Shake Delay
+local sliderFrame = Instance.new("Frame")
+sliderFrame.Parent = mainFrame
+sliderFrame.Size = UDim2.new(1, 0, 0, 40)
+sliderFrame.Position = UDim2.new(0, 0, 0.35, 0)
+sliderFrame.BackgroundTransparency = 1
+
+local delayLabel = Instance.new("TextLabel")
+delayLabel.Parent = sliderFrame
+delayLabel.Size = UDim2.new(0.6, 0, 1, 0)
+delayLabel.Position = UDim2.new(0, 0, 0, 0)
+delayLabel.Text = "AutoShake Delay"
+delayLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+delayLabel.TextSize = 16
+delayLabel.Font = Enum.Font.Gotham
+delayLabel.BackgroundTransparency = 1
+
+local slider = Instance.new("TextButton")
+slider.Parent = sliderFrame
+slider.Size = UDim2.new(0.4, 0, 1, 0)
+slider.Position = UDim2.new(0.6, 0, 0, 0)
+slider.Text = "0.5"
+slider.TextColor3 = Color3.fromRGB(255, 255, 255)
+slider.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+slider.Font = Enum.Font.Gotham
+slider.TextSize = 16
+slider.BorderSizePixel = 0
+slider.BorderRadius = UDim.new(0, 8)
+
+-- Slider interaction (changing the delay)
+slider.MouseButton1Click:Connect(function()
+    -- Update the value of the slider (you can implement the logic to change the value dynamically)
+    local newDelay = math.random(1, 10) * 0.1  -- Random example value
+    slider.Text = tostring(newDelay)
+end)
+
+
 
 -- Create the buttons for the features (no actions, just visual elements)
 local teleportButton = createRainbowButton("Teleport to Island", UDim2.new(0, 0, 0.15, 0))
