@@ -75,13 +75,13 @@ function preventAFK()
     end
 end
 
--- Creating the main ScreenGui
+-- Create ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer.PlayerGui
 screenGui.Name = "DashFishingUI"
 screenGui.ResetOnSpawn = false
 
--- Main frame with dark background and rounded edges
+-- Create Main Frame with rounded corners and transparent background
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
 mainFrame.Size = UDim2.new(0.4, 0, 0.6, 0)
@@ -90,7 +90,7 @@ mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 mainFrame.BackgroundTransparency = 0.7
 mainFrame.BorderSizePixel = 0
 mainFrame.ClipsDescendants = true
-mainFrame.BorderRadius = UDim.new(0, 12)  -- Rounded corners
+mainFrame.BorderRadius = UDim.new(0, 12)
 
 -- Title Label
 local titleLabel = Instance.new("TextLabel")
@@ -104,6 +104,158 @@ titleLabel.Font = Enum.Font.GothamBold
 titleLabel.BackgroundTransparency = 1
 titleLabel.TextStrokeTransparency = 0.5
 titleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+-- Create a minimize button
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Parent = titleLabel
+minimizeButton.Size = UDim2.new(0.1, 0, 1, 0)
+minimizeButton.Position = UDim2.new(1, -30, 0, 0)
+minimizeButton.Text = "-"
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+minimizeButton.Font = Enum.Font.Gotham
+minimizeButton.TextSize = 18
+minimizeButton.BorderSizePixel = 0
+minimizeButton.BorderRadius = UDim.new(0, 8)
+
+local isMinimized = false
+minimizeButton.MouseButton1Click:Connect(function()
+    if isMinimized then
+        mainFrame.Visible = true
+        isMinimized = false
+    else
+        mainFrame.Visible = false
+        isMinimized = true
+    end
+end)
+
+-- Create Tabs (Main, Teleports, etc.)
+local tabButtonFrame = Instance.new("Frame")
+tabButtonFrame.Parent = mainFrame
+tabButtonFrame.Size = UDim2.new(0.2, 0, 1, 0)
+tabButtonFrame.Position = UDim2.new(0, 0, 0, 0)
+tabButtonFrame.BackgroundTransparency = 1
+
+-- Create Main Tab Button
+local mainTabButton = Instance.new("TextButton")
+mainTabButton.Parent = tabButtonFrame
+mainTabButton.Size = UDim2.new(1, 0, 0, 50)
+mainTabButton.Text = "Main"
+mainTabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+mainTabButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainTabButton.Font = Enum.Font.Gotham
+mainTabButton.TextSize = 18
+mainTabButton.BorderSizePixel = 0
+mainTabButton.BorderRadius = UDim.new(0, 8)
+
+-- Function to create toggle switches
+function createToggle(title, position)
+    local toggleFrame = Instance.new("Frame")
+    toggleFrame.Parent = mainFrame
+    toggleFrame.Size = UDim2.new(1, 0, 0, 40)
+    toggleFrame.Position = position
+    toggleFrame.BackgroundTransparency = 1
+
+    -- Toggle Button
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Parent = toggleFrame
+    toggleButton.Size = UDim2.new(0.5, 0, 1, 0)
+    toggleButton.Position = UDim2.new(0, 0, 0, 0)
+    toggleButton.Text = title
+    toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    toggleButton.Font = Enum.Font.Gotham
+    toggleButton.TextSize = 16
+    toggleButton.BorderSizePixel = 0
+    toggleButton.BorderRadius = UDim.new(0, 8)
+
+    -- Toggle Switch Button
+    local toggleSwitch = Instance.new("TextButton")
+    toggleSwitch.Parent = toggleFrame
+    toggleSwitch.Size = UDim2.new(0.4, 0, 1, 0)
+    toggleSwitch.Position = UDim2.new(0.6, 0, 0, 0)
+    toggleSwitch.Text = "Off"
+    toggleSwitch.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggleSwitch.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    toggleSwitch.Font = Enum.Font.Gotham
+    toggleSwitch.TextSize = 16
+    toggleSwitch.BorderSizePixel = 0
+    toggleSwitch.BorderRadius = UDim.new(0, 8)
+
+    -- Toggle Switch Behavior
+    toggleSwitch.MouseButton1Click:Connect(function()
+        if toggleSwitch.Text == "Off" then
+            toggleSwitch.Text = "On"
+            toggleSwitch.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+        else
+            toggleSwitch.Text = "Off"
+            toggleSwitch.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+        end
+    end)
+end
+
+-- Create toggles
+createToggle("Auto Fish", UDim2.new(0, 0, 0.15, 0))
+createToggle("Freeze Position", UDim2.new(0, 0, 0.25, 0))
+
+-- Create a slider for AutoShake Delay
+local sliderFrame = Instance.new("Frame")
+sliderFrame.Parent = mainFrame
+sliderFrame.Size = UDim2.new(1, 0, 0, 40)
+sliderFrame.Position = UDim2.new(0, 0, 0.35, 0)
+sliderFrame.BackgroundTransparency = 1
+
+local delayLabel = Instance.new("TextLabel")
+delayLabel.Parent = sliderFrame
+delayLabel.Size = UDim2.new(0.6, 0, 1, 0)
+delayLabel.Position = UDim2.new(0, 0, 0, 0)
+delayLabel.Text = "AutoShake Delay"
+delayLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+delayLabel.TextSize = 16
+delayLabel.Font = Enum.Font.Gotham
+delayLabel.BackgroundTransparency = 1
+
+local slider = Instance.new("TextButton")
+slider.Parent = sliderFrame
+slider.Size = UDim2.new(0.4, 0, 1, 0)
+slider.Position = UDim2.new(0.6, 0, 0, 0)
+slider.Text = "0.5"
+slider.TextColor3 = Color3.fromRGB(255, 255, 255)
+slider.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+slider.Font = Enum.Font.Gotham
+slider.TextSize = 16
+slider.BorderSizePixel = 0
+slider.BorderRadius = UDim.new(0, 8)
+
+-- Slider interaction (changing the delay)
+slider.MouseButton1Click:Connect(function()
+    -- Update the value of the slider (you can implement the logic to change the value dynamically)
+    local newDelay = math.random(1, 10) * 0.1  -- Random example value
+    slider.Text = tostring(newDelay)
+end)
+
+-- Draggable functionality
+local dragging = false
+local dragStartPos = Vector2.new()
+
+titleLabel.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStartPos = input.Position - mainFrame.Position
+    end
+end)
+
+titleLabel.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        mainFrame.Position = UDim2.new(0, input.Position.X - dragStartPos.X, 0, input.Position.Y - dragStartPos.Y)
+    end
+end)
+
+titleLabel.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
 
 -- Adding tabs (Main, Teleports, etc.)
 local tabButtonFrame = Instance.new("Frame")
