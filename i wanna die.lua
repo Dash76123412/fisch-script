@@ -75,16 +75,42 @@ function preventAFK()
     end
 end
 
--- UI Customization with Purple and Rainbow Effect
+-- Creating the new Screen UI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer.PlayerGui
-screenGui.Name = "DashFishingMenu"
+screenGui.Name = "DashFishingUI"
+screenGui.ResetOnSpawn = false
 
+-- Main frame with gradient background
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
 mainFrame.Size = UDim2.new(0.3, 0, 0.5, 0)
 mainFrame.Position = UDim2.new(0.35, 0, 0.25, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(150, 0, 255)  -- Purple color
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Transparent base
+mainFrame.BackgroundTransparency = 0.5
+mainFrame.BorderSizePixel = 0
+mainFrame.ClipsDescendants = true
+
+-- Adding gradient background to the main frame
+local gradient = Instance.new("UIGradient")
+gradient.Parent = mainFrame
+gradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 0, 255)),  -- Purple
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))   -- Pink
+})
+gradient.Rotation = 45
+
+-- Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Parent = mainFrame
+titleLabel.Size = UDim2.new(1, 0, 0.1, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "Dash Fishing"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextSize = 24
+titleLabel.BackgroundTransparency = 1
+titleLabel.TextStrokeTransparency = 0.8
+titleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
 -- Function to create rainbow buttons
 function createRainbowButton(text, position)
