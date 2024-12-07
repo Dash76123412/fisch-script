@@ -3,8 +3,7 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-	Title = "Naoki Hub",
-	SubTitle = "discord.gg/25ms",
+	Title = "Dash Hub",
 	TabWidth = 160,
 	Size = UDim2.fromOffset(550, 350),
 	Acrylic = false, 
@@ -86,25 +85,23 @@ if not _G['Normal Hub Table'].isWindows then
 	local TweenService = game:GetService("TweenService")
 	local UserInputService = game:GetService("UserInputService")
 	local UIBUTTON = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local ImageButton = Instance.new("ImageButton")
-local UICorner = Instance.new("UICorner")
-local UICorner_2 = Instance.new("UICorner")
+	local Frame = Instance.new("Frame")
+	local ImageButton = Instance.new("ImageButton")
+	local UICorner = Instance.new("UICorner")
+	local UICorner_2 = Instance.new("UICorner")
 
--- GUI Setup
-UIBUTTON.Name = "UIBUTTON"
-UIBUTTON.Parent = game.CoreGui
-UIBUTTON.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	UIBUTTON.Name = "UIBUTTON"
+	UIBUTTON.Parent = game.CoreGui
+	UIBUTTON.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- Background color of the window (purple)
-Frame.Parent = UIBUTTON
-Frame.BackgroundColor3 = Color3.fromRGB(75, 0, 130)  -- Purple Background
-Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Frame.BorderSizePixel = 0
-Frame.Position = UDim2.new(0.157012194, 0, 0.164366379, 0)
-Frame.Size = UDim2.new(0, 115, 0, 49)
+	Frame.Parent = UIBUTTON
+	Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+	Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame.BorderSizePixel = 0
+	Frame.Transparency = 1
+	Frame.Position = UDim2.new(0.157012194, 0, 0.164366379, 0)
+	Frame.Size = UDim2.new(0, 115, 0, 49)
 
--- Rainbow Button Setup
 ImageButton.Parent = Frame
 ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ImageButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -118,19 +115,6 @@ ImageButton.Size = UDim2.new(0, 64, 0, 64)
 ImageButton.Image = "rbxassetid://965305329" -- Open image asset ID
 local isOpen = true -- Variable to track the state
 
--- Function to create a rainbow color effect on the button
-local function RainbowButton(button)
-    local tweenService = game:GetService("TweenService")
-    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true) -- Repeat forever
-    local goal = {BackgroundColor3 = Color3.fromHSV(tick() % 10 / 10, 1, 1)} -- Use HSV for smooth color transitions
-    local tween = tweenService:Create(button, tweenInfo, goal)
-    tween:Play()
-end
-
--- Activate the rainbow button effect
-RainbowButton(ImageButton)
-
--- Handle the image toggle
 ImageButton.MouseButton1Click:Connect(function()
     -- Animate the button size
     ImageButton:TweenSize(UDim2.new(0, 60, 0, 60), Enum.EasingDirection.In, Enum.EasingStyle.Elastic, 0.1)
@@ -154,52 +138,11 @@ ImageButton.MouseButton1Click:Connect(function()
     VirtualInputManager:SendKeyEvent(false,"LeftControl",false,game)
 end)
 
--- Add corner radius to make the UI look smooth
 UICorner.CornerRadius = UDim.new(0, 100)
 UICorner.Parent = ImageButton
 
-UICorner_2.CornerRadius = UDim.new(0, 10)
-UICorner_2.Parent = Frame
-
--- Add draggable functionality
-local UIS = game:GetService('UserInputService')
-local frame = Frame
-local dragToggle = nil
-local dragSpeed = 0.25
-local dragStart = nil
-local startPos = nil
-
-local function updateInput(input)
-    local delta = input.Position - dragStart
-    local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
-        startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
-end
-
-frame.InputBegan:Connect(function(input)
-    if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
-        dragToggle = true
-        dragStart = input.Position
-        startPos = frame.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragToggle = false
-            end
-        end)
-    end
-end)
-
-UIS.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        if dragToggle then
-            Frame.Transparency = 1
-            updateInput(input)
-        else
-            Frame.Transparency = 1
-        end
-    end
-end)
-
+	UICorner_2.CornerRadius = UDim.new(0, 10)
+	UICorner_2.Parent = Frame
 
 
 	local UIS = game:GetService('UserInputService')
