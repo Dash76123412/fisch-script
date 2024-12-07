@@ -21,6 +21,17 @@ do
 	Players = game.Players
 	LocalPlayer = game.Players.LocalPlayer
 	Client = game.Players.LocalPlayer
+
+	local UIBUTTON = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local ImageButton = Instance.new("ImageButton")
+local UICorner = Instance.new("UICorner")
+local UICorner_2 = Instance.new("UICorner")
+
+-- GUI Setup
+UIBUTTON.Name = "UIBUTTON"
+UIBUTTON.Parent = game.CoreGui
+UIBUTTON.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	
 -- Function to create a rainbow color effect on the button
 local function RainbowButton(button)
