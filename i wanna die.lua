@@ -21,8 +21,23 @@ do
 	Players = game.Players
 	LocalPlayer = game.Players.LocalPlayer
 	Client = game.Players.LocalPlayer
-
-
+	
+-- Function to create a rainbow color effect on the button
+local function RainbowButton(button)
+    local tweenService = game:GetService("TweenService")
+    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true) -- Repeat forever
+    local goal = {BackgroundColor3 = Color3.fromHSV(tick() % 10 / 10, 1, 1)} -- Use HSV for smooth color transitions
+    local tween = tweenService:Create(button, tweenInfo, goal)
+    tween:Play()
+end
+	
+local function RainbowButton(button)
+    local tweenService = game:GetService("TweenService")
+    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true) -- Repeat forever
+    local goal = {BackgroundColor3 = Color3.fromHSV(tick() % 10 / 10, 1, 1)} -- Use HSV for smooth color transitions
+    local tween = tweenService:Create(button, tweenInfo, goal)
+    tween:Play()
+end
 	-- \\ Module GetService // --
 
 	ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -94,13 +109,13 @@ if not _G['Normal Hub Table'].isWindows then
 	UIBUTTON.Parent = game.CoreGui
 	UIBUTTON.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	Frame.Parent = UIBUTTON
-	Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-	Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Frame.BorderSizePixel = 0
-	Frame.Transparency = 1
-	Frame.Position = UDim2.new(0.157012194, 0, 0.164366379, 0)
-	Frame.Size = UDim2.new(0, 115, 0, 49)
+	-- Background color of the window (purple)
+Frame.Parent = UIBUTTON
+Frame.BackgroundColor3 = Color3.fromRGB(75, 0, 130)  -- Purple Background
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.157012194, 0, 0.164366379, 0)
+Frame.Size = UDim2.new(0, 115, 0, 49)
 
 ImageButton.Parent = Frame
 ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
