@@ -1,0 +1,103 @@
+-- Teleport to predefined locations (example for one location)
+local teleportLocations = {
+    ["Island1"] = CFrame.new(100, 10, 100),  -- replace with actual coordinates
+    ["Rod1"] = CFrame.new(200, 10, 150),  -- replace with actual coordinates
+    -- Add more locations here
+}
+
+-- Teleport Function
+function teleportTo(location)
+    local targetPosition = teleportLocations[location]
+    if targetPosition then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPosition
+    end
+end
+-- Teleport Player to Another Player
+function teleportPlayerToMe(player)
+    local myPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    player.Character.HumanoidRootPart.CFrame = CFrame.new(myPosition)
+end
+-- Give Fish to a Player
+function giveFish(player, amount)
+    -- Add your code to increase the player's fish
+end
+
+-- Give Money to a Player
+function giveMoney(player, amount)
+    -- Add your code to increase the player's money
+end
+-- Auto Reel
+function autoReel()
+    while true do
+        -- Implement code for automatic reeling
+        wait(2)  -- wait 2 seconds or adjust as needed
+    end
+end
+
+-- Auto Shake
+function autoShake()
+    while true do
+        -- Implement code for automatic shaking
+        wait(1)  -- wait 1 second or adjust as needed
+    end
+end
+
+-- Auto Cast
+function autoCast()
+    while true do
+        -- Implement code for automatic casting
+        wait(5)  -- wait 5 seconds or adjust as needed
+    end
+end
+-- Freeze Player
+function freezePlayer()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+end
+
+-- Walk on Water (Example: Set water parts to walkable)
+function walkOnWater()
+    -- Implement walk-on-water logic
+end
+
+-- Walk Speed Multiplier
+function setWalkSpeed(multiplier)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 * multiplier
+end
+
+-- Jump Power Multiplier
+function setJumpPower(multiplier)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50 * multiplier
+end
+-- Anti-AFK
+function preventAFK()
+    while true do
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        wait(10)  -- prevent AFK every 10 seconds
+    end
+end
+-- Create the main menu
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer.PlayerGui
+screenGui.Name = "DashMenu"
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Parent = screenGui
+mainFrame.Size = UDim2.new(0.3, 0, 0.5, 0)
+mainFrame.Position = UDim2.new(0.35, 0, 0.25, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(150, 0, 255)  -- Nice purple shade
+
+-- Rainbow effect for buttons
+function createRainbowButton(text, position)
+    local button = Instance.new("TextButton")
+    button.Parent = mainFrame
+    button.Text = text
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Position = position
+    button.BackgroundColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)  -- Rainbow effect
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+end
+
+-- Add some buttons
+createRainbowButton("Teleport to Island", UDim2.new(0, 0, 0, 0))
+createRainbowButton("Auto Cast", UDim2.new(0, 0, 0, 60))
+createRainbowButton("Give Fish", UDim2.new(0, 0, 0, 120))
